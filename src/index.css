@@ -149,6 +149,40 @@ body {
     max-width: 50%;
 }
 
+.col-md-5 {
+    position: relative;
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    flex: 0 0 41.67%;
+    max-width: 41.67%;
+}
+
+.col-md-4 {
+    position: relative;
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    flex: 0 0 33.3%;
+    max-width: 33.3%;
+}
+
+.col-md-3 {
+    position: relative;
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    flex: 0 0 25%;
+    max-width: 25%;
+}
+
+.price-order {
+    position: relative;
+    top: 50%;
+    margin-right: -50%;
+    color: #86d0c1;
+}
+
 .mt-1 {
     margin-top: 1rem i !important;
 }

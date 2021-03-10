@@ -4,7 +4,7 @@ const SearchBox = ({ handleChange }) => (
     <input
         type="search"
         className="search"
-        placeholder="Please type Email or Order ID"
+        placeholder="Search by Email or Order ID"
         onChange={handleChange}
     />
 );
