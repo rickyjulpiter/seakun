@@ -1,6 +1,6 @@
 import React from "react";
 
-export const SearchBox = (handleChange) => (
+const SearchBox = ({ handleChange }) => (
     <input
         type="search"
         className="search"

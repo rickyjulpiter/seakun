@@ -25,6 +25,7 @@ export default class OrderComponent extends Component {
 
     handleChange = (e) => {
         this.setState({ searchField: e.target.value });
+        console.log(e);
     };
 
     componentDidMount() {
@@ -33,11 +34,20 @@ export default class OrderComponent extends Component {
 
     render() {
         const { invoices, searchField } = this.state;
-        const filteredInvoices = invoices.filter((invoice) =>
-            invoice.personalAccount.email
-                .toLowerCase()
-                .includes(searchField.toLowerCase())
-        );
+        const filteredInvoices = invoices.filter((invoice) => {
+            if (this.state.searchField == null) return invoice;
+            else if (
+                invoice.personalAccount.email
+                    .toLowerCase()
+                    .includes(searchField.toLowerCase()) ||
+                invoice.personalAccount.name
+                    .toLowerCase()
+                    .includes(searchField.toLowerCase())
+            ) {
+                return invoice;
+            }
+        });
+
         return (
             <div className="main_content">
                 <div className="header"></div>
