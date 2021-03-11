@@ -87,7 +87,7 @@ body {
 }
 
 .wrapper .main_content .info div {
-    margin-bottom: 10px;
+    margin-bottom: 6px;
 }
 
 @media (max-height: 500px) {
@@ -221,4 +221,123 @@ body {
 
 .btn:hover {
     background-color: #37504b;
+}
+
+.pagination,
+.pagination-list {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+.pagination {
+    font-size: 1rem;
+    margin: -0.25rem;
+}
+
+.pagination-next,
+.pagination-previous {
+    padding: 0.4em;
+    white-space: nowrap;
+    border-color: #dbdbdb;
+    background-color: #86d0c1;
+    color: #363636;
+    border: none;
+    border-radius: 5px;
+    min-width: 2.5em;
+}
+
+.pagination-link,
+.pagination-next,
+.pagination-previous {
+    border-color: #dbdbdb;
+    color: #363636;
+    min-width: 2.5em;
+}
+
+.pagination-next:focus,
+.pagination-previous:focus {
+    background-color: #86d0c1;
+    border: none;
+}
+
+.pagination-ellipsis,
+.pagination-link,
+.pagination-next,
+.pagination-previous {
+    font-size: 1em;
+    justify-content: center;
+    margin: 0.25rem;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    text-align: center;
+}
+
+.button {
+    background-color: #fff;
+    border: none;
+    border-radius: 5px;
+    color: #363636;
+    cursor: pointer;
+    justify-content: center;
+    padding-bottom: calc(0.5em - 1px);
+    padding-left: 1em;
+    padding-right: 1em;
+    padding-top: calc(0.5em - 1px);
+    text-align: center;
+    white-space: nowrap;
+    outline: 0;
+}
+
+.button:hover {
+    background-color: #86d0c1;
+}
+
+.select {
+    display: inline-block;
+    max-width: 100%;
+    position: relative;
+    vertical-align: top;
+}
+
+.select select {
+    margin-top: 23px;
+    cursor: pointer;
+    display: block;
+    max-width: 100%;
+    outline: 0;
+    background-color: #fff;
+    border-color: #dbdbdb;
+    border-radius: 4px;
+    color: #363636;
+    align-items: center;
+    border: none;
+    font-size: 1rem;
+    line-height: 1.5;
+    padding: 0.4em;
+}
+
+.select select:not([multiple]) {
+    padding-right: 2.5em;
+}
+
+.control {
+    box-sizing: border-box;
+    clear: both;
+    font-size: 1rem;
+    position: relative;
+    text-align: inherit;
+}
+
+.search {
+    padding: 0.4em;
+    align-items: center;
+    border-radius: 5px;
+    background-color: #fff;
+    border-color: #dbdbdb;
+    border-radius: 4px;
+    color: #363636;
+    line-height: 1.5;
+    font-size: 1em;
 }

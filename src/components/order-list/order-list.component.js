@@ -1,88 +1,171 @@
-// import React from "react";
-// import OrderCard from "../order-card/order-card.component";
-// import Pagination from "react-js-pagination";
-
-// const OrderList = (props) => {
-//     return (
-//         <div>
-//             {props.invoices.map((invoice, index) => (
-//                 <OrderCard key={index} invoice={invoice}></OrderCard>
-//             ))}
-//         </div>
-//     );
-// };
-
-// export default OrderList;
-
 import React, { Component } from "react";
-import ReactPaginate from "react-paginate";
 import OrderCard from "../order-card/order-card.component";
+import { connect } from "react-redux";
+import {
+    filterByValue,
+    loadData,
+    loadExactPage,
+    loadNewPage,
+    sortByAlphabet,
+    sortByPrice,
+} from "../../store";
 
-import "./order-list.styles.css";
-
-export default class OrderList extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            offset: 0,
-            data: [],
-            perPage: 5,
-            currentPage: 0,
-        };
-    }
-
-    receivedData() {
-        const data = this.props.invoices;
-        const slice = data.slice(
-            this.state.offset,
-            this.state.offset + this.state.perPage
-        );
-        const postData = slice.map((invoice, index) => (
-            <OrderCard key={index} invoice={invoice}></OrderCard>
-        ));
-        this.setState({
-            pageCount: Math.ceil(data.length / this.state.perPage),
-            postData,
-        });
-    }
-
-    handlePageClick = (e) => {
-        const selectedPage = e.selected;
-        const offset = selectedPage * this.state.perPage;
-
-        this.setState(
-            {
-                currentPage: selectedPage,
-                offset: offset,
-            },
-            () => {
-                this.receivedData();
-            }
-        );
-    };
-
+class OrderList extends Component {
     componentDidMount() {
-        this.receivedData();
+        const params = new URLSearchParams(window.location.search);
+        const pageQueryParam = params.get("page");
+        if (!pageQueryParam) {
+            window.history.pushState({ page: 1 }, "title 1", "?page=1");
+        } else {
+        }
+        this.props.dispatch(loadData({ count: 21 }));
+    }
+
+    filterByInput(e) {
+        let input = e.target.value;
+        this.props.dispatch(filterByValue({ value: input }));
+    }
+
+    nextPage() {
+        this.props.dispatch(loadNewPage({ page: 1 }));
+    }
+
+    previousPage() {
+        this.props.dispatch(loadNewPage({ page: -1 }));
+    }
+
+    goToPage(page) {
+        this.props.dispatch(loadExactPage({ page }));
+    }
+
+    sortByInput(e) {
+        let value = e.target.value;
+        let direction = value.endsWith("asc") ? "asc" : "desc";
+
+        if (value.startsWith("price")) {
+            this.props.dispatch(sortByPrice({ direction }));
+        } else {
+            this.props.dispatch(sortByAlphabet({ direction }));
+        }
     }
 
     render() {
+        let products = this.props.state.filteredProducts;
         return (
             <div>
-                {this.state.postData}
-                <ReactPaginate
-                    previousLabel={"prev"}
-                    nextLabel={"next"}
-                    breakLabel={"..."}
-                    breakClassName={"break-me"}
-                    pageCount={this.state.pageCount}
-                    marginPagesDisplayed={2}
-                    pageRangeDisplayed={5}
-                    onPageChange={this.handlePageClick}
-                    containerClassName={"pagination"}
-                    subContainerClassName={"pages pagination"}
-                    activeClassName={"active"}
-                />
+                <div>
+                    <div>
+                        <div className="field is-grouped">
+                            <div className="row">
+                                <div className="col-md-6">
+                                    <div className="control">
+                                        <div className="select">
+                                            <select
+                                                onChange={(e) => {
+                                                    this.sortByInput(e);
+                                                }}
+                                            >
+                                                <option
+                                                    value=""
+                                                    disabled
+                                                    selected
+                                                >
+                                                    Click to Sort by
+                                                </option>
+
+                                                <option value="alphabet_asc">
+                                                    Name - A-Z
+                                                </option>
+                                                <option value="alphabet_desc">
+                                                    Name - Z-A
+                                                </option>
+
+                                                <option value="price_asc">
+                                                    Price - Lowest to Highest
+                                                </option>
+                                                <option value="price_desc">
+                                                    Price - Highest to Lowest
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="col-md-6">
+                                    <div className="control float-right">
+                                        <input
+                                            onChange={(e) => {
+                                                this.filterByInput(e);
+                                            }}
+                                            className="search"
+                                            placeholder="Search with Name or Email"
+                                            type="text"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        className="tile is-ancestor"
+                        style={{ flexWrap: "wrap" }}
+                    >
+                        {products &&
+                            products.length &&
+                            products.map((product) => (
+                                <OrderCard product={product} />
+                            ))}
+                    </div>
+                </div>
+                <div className="float-right mt-3">
+                    <nav
+                        className="pagination"
+                        role="navigation"
+                        aria-label="pagination"
+                    >
+                        <button
+                            className="button pagination-previous"
+                            onClick={() => {
+                                this.previousPage();
+                            }}
+                        >
+                            Previous
+                        </button>
+                        <button
+                            className="button pagination-next"
+                            onClick={() => {
+                                this.nextPage();
+                            }}
+                        >
+                            Next page
+                        </button>
+                        <ul className="pagination-list">
+                            {[...Array(this.props.state.filteredPages)].map(
+                                (value, index) => (
+                                    <button
+                                        className={`button pagination-link ${
+                                            this.props.state.currentPage ===
+                                            index + 1
+                                                ? "is-current"
+                                                : ""
+                                        }`}
+                                        aria-label="Page 1"
+                                        onClick={() => this.goToPage(index + 1)}
+                                        aria-current="page"
+                                    >
+                                        {index + 1}
+                                    </button>
+                                )
+                            )}
+                        </ul>
+                    </nav>
+                </div>
             </div>
         );
     }
 }
+
+function mapStateToProps(state) {
+    return { state };
+}
+
+export default connect(mapStateToProps)(OrderList);

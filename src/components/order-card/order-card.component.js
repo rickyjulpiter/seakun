@@ -7,11 +7,11 @@ export default function OrderCard(props) {
         <div className="card mt-3">
             <div className="card-header">
                 <span className="float-left">
-                    Order ID : {props.invoice.orderId}
+                    Order ID : {props.product.orderId}
                 </span>
                 <span className="float-right">
                     Create At:{" "}
-                    {moment(props.invoice.createdAt.substring(0, 10)).format(
+                    {moment(props.product.createdAt.substring(0, 10)).format(
                         "LL"
                     )}
                 </span>
@@ -20,9 +20,9 @@ export default function OrderCard(props) {
                 <div className="row">
                     <div className="col-md-5">
                         <small>Info Akun</small>
-                        <p>{props.invoice.personalAccount.name}</p>
-                        <p>{props.invoice.personalAccount.email}</p>
-                        <p>{props.invoice.personalAccount.phonenumber}</p>
+                        <p>{props.product.name}</p>
+                        <p>{props.product.email}</p>
+                        <p>{props.product.phonenumber}</p>
                     </div>
                     <div className="col-md-5">
                         <div className="row">
@@ -35,11 +35,11 @@ export default function OrderCard(props) {
                             </div>
                             <div className="col-md-5">
                                 <ul>
-                                    <li>{props.invoice.provider}</li>
-                                    <li>{props.invoice.paket}</li>
+                                    <li>{props.product.provider}</li>
+                                    <li>{props.product.paket}</li>
                                     <li>
                                         {moment(
-                                            props.invoice.expired.substring(
+                                            props.product.expired.substring(
                                                 0,
                                                 10
                                             )
@@ -51,10 +51,7 @@ export default function OrderCard(props) {
                                 <h2 className="price-order float-right">
                                     {
                                         <NumberFormat
-                                            value={
-                                                props.invoice.payment
-                                                    .paymentTotal
-                                            }
+                                            value={props.product.paymentTotal}
                                             displayType={"text"}
                                             thousandSeparator={true}
                                             prefix={"Rp. "}

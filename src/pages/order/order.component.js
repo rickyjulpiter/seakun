@@ -2,15 +2,12 @@ import React, { Component } from "react";
 import axios from "axios";
 
 import OrderList from "../../components/order-list/order-list.component";
-import SearchBox from "../../components/search-box/search-box.component";
 
 export default class OrderComponent extends Component {
     constructor() {
         super();
         this.state = {
             invoices: [],
-            searchField: "",
-            filteredInvoices: null,
         };
     }
 
@@ -22,28 +19,6 @@ export default class OrderComponent extends Component {
                 this.setState({ invoices });
             })
             .catch((err) => console.log(err));
-    };
-
-    handleChange = (e) => {
-        this.setState({ searchField: e.target.value });
-        let search = e.target.value;
-        let data = this.state.invoices;
-
-        const filteredInvoices = data.filter((invoice) => {
-            if (search == null) return invoice;
-            else if (
-                invoice.personalAccount.email
-                    .toLowerCase()
-                    .includes(search.toLowerCase()) ||
-                invoice.personalAccount.name
-                    .toLowerCase()
-                    .includes(search.toLowerCase())
-            ) {
-                return invoice;
-            }
-        });
-
-        this.setState({ filteredInvoices });
     };
 
     componentDidMount() {
@@ -62,8 +37,7 @@ export default class OrderComponent extends Component {
                         <></>
                     ) : (
                         <>
-                            <SearchBox handleChange={this.handleChange} />
-                            <OrderList invoices={this.state.invoices} />
+                            <OrderList />
                         </>
                     )}
                 </div>
