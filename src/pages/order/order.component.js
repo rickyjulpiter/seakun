@@ -10,6 +10,7 @@ export default class OrderComponent extends Component {
         this.state = {
             invoices: [],
             searchField: "",
+            filteredInvoices: null,
         };
     }
 
@@ -25,7 +26,24 @@ export default class OrderComponent extends Component {
 
     handleChange = (e) => {
         this.setState({ searchField: e.target.value });
-        console.log(e);
+        let search = e.target.value;
+        let data = this.state.invoices;
+
+        const filteredInvoices = data.filter((invoice) => {
+            if (search == null) return invoice;
+            else if (
+                invoice.personalAccount.email
+                    .toLowerCase()
+                    .includes(search.toLowerCase()) ||
+                invoice.personalAccount.name
+                    .toLowerCase()
+                    .includes(search.toLowerCase())
+            ) {
+                return invoice;
+            }
+        });
+
+        this.setState({ filteredInvoices });
     };
 
     componentDidMount() {
@@ -33,29 +51,21 @@ export default class OrderComponent extends Component {
     }
 
     render() {
-        const { invoices, searchField } = this.state;
-        const filteredInvoices = invoices.filter((invoice) => {
-            if (this.state.searchField == null) return invoice;
-            else if (
-                invoice.personalAccount.email
-                    .toLowerCase()
-                    .includes(searchField.toLowerCase()) ||
-                invoice.personalAccount.name
-                    .toLowerCase()
-                    .includes(searchField.toLowerCase())
-            ) {
-                return invoice;
-            }
-        });
-
         return (
             <div className="main_content">
                 <div className="header"></div>
                 <div className="info">
                     <h1 className="mt-1">Order List</h1>
 
-                    <SearchBox handleChange={this.handleChange} />
-                    <OrderList invoices={filteredInvoices} />
+                    {/* check when the data already exists */}
+                    {Object.keys(this.state.invoices).length === 0 ? (
+                        <></>
+                    ) : (
+                        <>
+                            <SearchBox handleChange={this.handleChange} />
+                            <OrderList invoices={this.state.invoices} />
+                        </>
+                    )}
                 </div>
             </div>
         );

@@ -18,7 +18,7 @@ export default function OrderCard(props) {
             </div>
             <div className="card-body">
                 <div className="row">
-                    <div className="col-md-4">
+                    <div className="col-md-5">
                         <small>Info Akun</small>
                         <p>{props.invoice.personalAccount.name}</p>
                         <p>{props.invoice.personalAccount.email}</p>
@@ -26,7 +26,7 @@ export default function OrderCard(props) {
                     </div>
                     <div className="col-md-5">
                         <div className="row">
-                            <div className="col-md-4">
+                            <div className="col-md-3">
                                 <ul>
                                     <li>Provider</li>
                                     <li>Paket</li>
