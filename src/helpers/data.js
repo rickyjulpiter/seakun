@@ -424,6 +424,7 @@ export default function Data() {
         provider: dataInvoices.provider,
         paket: dataInvoices.paket,
         expired: dataInvoices.expired,
+        voucherCode: dataInvoices.voucherCode,
 
         name: dataInvoices.personalAccount.name,
         email: dataInvoices.personalAccount.email,
@@ -432,10 +433,10 @@ export default function Data() {
         paymentName: dataInvoices.payment.name,
         paymentStatus: dataInvoices.payment.status,
         paymentTotal: dataInvoices.payment.paymentTotal,
+        paymentDate: dataInvoices.payment.paymentDate,
 
         price: dataInvoices.payment.paymentTotal,
-        salesPrice: 213,
     }));
-    console.log(dataSeakun);
+    // console.log(dataSeakun);
     return dataSeakun;
 }

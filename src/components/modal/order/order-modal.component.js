@@ -2,7 +2,7 @@ import React from "react";
 import moment from "moment";
 import NumberFormat from "react-number-format";
 
-function OrderCard(props) {
+function ModalOrder(props) {
     return (
         <>
             <div className="card mt-3 card-no-shadow">
@@ -67,8 +67,38 @@ function OrderCard(props) {
                     </div>
                 </div>
             </div>
+            <div className="card card-no-shadow mt-1">
+                <div className="card-body">
+                    <div className="row">
+                        <div className="col-md-2">
+                            <ul>
+                                <li>Voucher Code</li>
+                                <li>Payment Status</li>
+                                <li>Payment Date</li>
+                                <li>Payment Bank</li>
+                            </ul>
+                        </div>
+                        <div className="col-md-4">
+                            <ul>
+                                <li>: {props.product.voucherCode}</li>
+                                <li>: {props.product.paymentStatus}</li>
+                                <li>
+                                    :{" "}
+                                    {moment(
+                                        props.product.paymentDate.substring(
+                                            0,
+                                            10
+                                        )
+                                    ).format("LL")}
+                                </li>
+                                <li>: {props.product.paymentName}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </>
     );
 }
 
-export default OrderCard;
+export default ModalOrder;

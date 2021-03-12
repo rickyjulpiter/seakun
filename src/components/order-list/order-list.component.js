@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import OrderCard from "../order-card/order-card.component";
+import ModalOrder from "../modal/order/order-modal.component";
+import { Modal, ModalBody } from "reactstrap";
 import { connect } from "react-redux";
 import {
     filterByValue,
@@ -11,6 +13,15 @@ import {
 } from "../../store";
 
 class OrderList extends Component {
+    constructor() {
+        super();
+        this.state = {
+            selectedData: {},
+            dataProducts: [],
+            modalDialog: false,
+            modalWithoutAnimation: false,
+        };
+    }
     componentDidMount() {
         const params = new URLSearchParams(window.location.search);
         const pageQueryParam = params.get("page");
@@ -49,8 +60,30 @@ class OrderList extends Component {
         }
     }
 
+    toggleModal(name) {
+        switch (name) {
+            case "modalDialog":
+                this.setState({ modalDialog: !this.state.modalDialog });
+                break;
+            case "modalWithoutAnimation":
+                this.setState({
+                    modalWithoutAnimation: !this.state.modalWithoutAnimation,
+                });
+                break;
+            case "modalMessage":
+                this.setState({ modalMessage: !this.state.modalMessage });
+                break;
+            case "modalAlert":
+                this.setState({ modalAlert: !this.state.modalAlert });
+                break;
+            default:
+                break;
+        }
+    }
+
     render() {
         let products = this.props.state.filteredProducts;
+
         return (
             <div>
                 <div>
@@ -65,11 +98,7 @@ class OrderList extends Component {
                                                     this.sortByInput(e);
                                                 }}
                                             >
-                                                <option
-                                                    value=""
-                                                    disabled
-                                                    selected
-                                                >
+                                                <option value="" disabled>
                                                     Click to Sort by
                                                 </option>
 
@@ -98,7 +127,7 @@ class OrderList extends Component {
                                             }}
                                             className="search"
                                             placeholder="Search with Name or Email"
-                                            type="text"
+                                            type="search"
                                         />
                                     </div>
                                 </div>
@@ -111,8 +140,22 @@ class OrderList extends Component {
                     >
                         {products &&
                             products.length &&
-                            products.map((product) => (
-                                <OrderCard product={product} />
+                            products.map((product, index) => (
+                                <div key={index}>
+                                    <a
+                                        href="#modal"
+                                        onClick={() => {
+                                            this.setState({
+                                                selectedData: product,
+                                            });
+                                            this.toggleModal(
+                                                "modalWithoutAnimation"
+                                            );
+                                        }}
+                                    >
+                                        <OrderCard product={product} />
+                                    </a>
+                                </div>
                             ))}
                     </div>
                 </div>
@@ -130,18 +173,12 @@ class OrderList extends Component {
                         >
                             Previous
                         </button>
-                        <button
-                            className="button pagination-next"
-                            onClick={() => {
-                                this.nextPage();
-                            }}
-                        >
-                            Next page
-                        </button>
+
                         <ul className="pagination-list">
                             {[...Array(this.props.state.filteredPages)].map(
                                 (value, index) => (
                                     <button
+                                        key={index}
                                         className={`button pagination-link ${
                                             this.props.state.currentPage ===
                                             index + 1
@@ -157,8 +194,36 @@ class OrderList extends Component {
                                 )
                             )}
                         </ul>
+                        <button
+                            className="button pagination-next"
+                            onClick={() => {
+                                this.nextPage();
+                            }}
+                        >
+                            Next page
+                        </button>
                     </nav>
                 </div>
+                <Modal
+                    isOpen={this.state.modalWithoutAnimation}
+                    fade={false}
+                    toggle={() => this.toggleModal("modalWithoutAnimation")}
+                    className="modal"
+                >
+                    <ModalBody>
+                        <h3>Order Detail</h3>
+                        <ModalOrder product={this.state.selectedData} />
+
+                        <button
+                            className="btn float-right mt-2"
+                            onClick={() =>
+                                this.toggleModal("modalWithoutAnimation")
+                            }
+                        >
+                            Close
+                        </button>
+                    </ModalBody>
+                </Modal>
             </div>
         );
     }
